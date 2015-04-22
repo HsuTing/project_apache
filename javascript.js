@@ -1,4 +1,4 @@
-d3.json("data.json", function(data) {
+d3.json("data.json", function(root) {
 	var margin = {
 		top: 40,
 		right: 10,
@@ -7,8 +7,6 @@ d3.json("data.json", function(data) {
 	};
 	var width = 960 - margin.left - margin.right;
 	var height = 500 - margin.top - margin.bottom;
-	var x = d3.scale.linear().range([0, width]);
-	var y = d3.scale.linear().range([0, height]);
 
 	var color = d3.scale.category20();
 
@@ -24,12 +22,15 @@ d3.json("data.json", function(data) {
 	    .style("height", (height + margin.top + margin.bottom) + "px")
 	    .style("left", margin.left + "px")
 	    .style("top", margin.top + "px")
-	  .append("svg:svg")
-	    .attr("width", width)
-		.attr("height", height)
-	  .append("svg:g")
-	    .attr("transform", "translate(.5, .5)");
 
-	var node = root = data;
-	var temp;
+	var node = svg.datum(root)
+	    .selectAll(".node")
+	    .data(treemap.nodes)
+	  .enter().append("div")
+	    .style("background", function(d) { return d.children ? color(d.name) : null; })
+	    .text(function(d) { return d.children ? null : d.name; });
+
+	function position() {
+		this
+	}
 });
