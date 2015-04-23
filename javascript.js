@@ -10,7 +10,7 @@ d3.json("data.json", function(data) {
 	var treemap = d3.layout.treemap()
 	  .size([width, height])
 	  .sticky(true)
-	  .value(function(d) { return d.size; });
+	  .value(size);								//big treemap parameter
 
 	var svg = d3.select("body")
 	  .append("div")
@@ -24,7 +24,6 @@ d3.json("data.json", function(data) {
 		.attr("transform", "translate(.5, .5)");
 
 	node = root = data;
-	var choice = 'Size';
 	var nodes = treemap.nodes(root)
 	  .filter(function(d) { return !d.children; });
 
@@ -34,7 +33,7 @@ d3.json("data.json", function(data) {
 	    .attr("class", "cell")
 	    .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 	    .on("click", function(d) {
-			treemap.value(choice == 'Size' ? year : size).nodes(root);
+			treemap.value(node.name == "flare" ? year : size).nodes(root);	//compare treemap name
 			return zoom(node == d.parent ? root : d.parent); 
 		});
 
@@ -56,16 +55,15 @@ d3.json("data.json", function(data) {
 			return d.dx > d.w ? 1 : 0;
 		});
 
-	function size(d) {
+	function size(d) {						//big treemap parameter
 		return d.size;
 	}
 
-	function year(d) {
+	function year(d) {						//small treemap parameter
 		return d.year;
 	}
 
 	function zoom(d) {
-		console.log(d);
 		var kx = width / d.dx;
 		var ky = height / d.dy;
 		x.domain([d.x, d.x + d.dx]);
@@ -88,7 +86,6 @@ d3.json("data.json", function(data) {
 		     .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
 
 		node = d;
-		choice = (choice == 'Size' ? 'Year' : 'Size');
 		d3.event.stopPropagation();
 	}
 });
