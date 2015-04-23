@@ -1,4 +1,4 @@
-d3.csv("city.csv", function(data) {
+d3.csv("data.json", function(data) {
 	console.log(data);
 
 	var width = 1280 - 80;
