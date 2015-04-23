@@ -1,6 +1,4 @@
-d3.csv("data.json", function(data) {
-	console.log(data);
-
+d3.json("data.json", function(data) {
 	var width = 1280 - 80;
 	var height = 800 - 180;
 	var x = d3.scale.linear().range([0, width]);
@@ -91,3 +89,4 @@ d3.csv("data.json", function(data) {
 		d3.event.stopPropagation();
 	}
 });
+
