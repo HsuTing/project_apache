@@ -10,10 +10,17 @@ d3.json("data.json", function(root) {
 
 	var color = d3.scale.category20();
 
-	var treemap = d3.layout.treemap()
+	var treemap_big = d3.layout.treemap()
 	  .size([width, height])
 	  .sticky(true)
 	  .value(function(d) { return d.size; });
+
+	var treemap_small = d3.layout.treemap()
+	  .size([width, height])
+	  .sticky(true)
+	  .value(function(d) { return d.year; });
+
+	var temp = treemap_big;
 
 	var svg = d3.select("body")
 	  .append("div")
@@ -25,18 +32,20 @@ d3.json("data.json", function(root) {
 
 	var node = svg.datum(root)
 	    .selectAll(".node")
-	    .data(treemap.nodes)
+	    .data(treemap_big.nodes)
 	  .enter().append("div")
 		.attr("class", "node")
 	    .call(position)
 	    .style("background", function(d) { return d.children ? color(d.name) : null; })
-	    .text(function(d) { return d.children ? null : d.name; });
+	    .text(function(d) { return d.children ? null : d.name; })
+	    .on("click", function(d) { return zoom(treemap_small); });
 
-	node
-	    .data(treemap.value(function(d) { return d.year; }).nodes(root))
-	  .transition()
-	    .duration(1500)
-	    .call(position);
+	function zoom(d) {
+		node
+		    .data(d.nodes)
+		  .enter()
+		  .call(position);
+	}
 
 	function position() {
 		this
