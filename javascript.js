@@ -1,4 +1,6 @@
-d3.json("data.json", function(data) {
+d3.csv("city.csv", function(data) {
+	console.log(data);
+
 	var width = 1280 - 80;
 	var height = 800 - 180;
 	var x = d3.scale.linear().range([0, width]);
