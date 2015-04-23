@@ -19,5 +19,5 @@ set.css
 javascript.js
 
 	1.If you need, you just need to change the name of json and 
-	the line where has the comment.
+	  the line where has the comment.
 	2.size, year -> children`s parameters.
