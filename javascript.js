@@ -7,11 +7,13 @@ d3.json("data.json", function(data) {
 
 	var color = d3.scale.category20c();
 
+	//make treemap
 	var treemap = d3.layout.treemap()
 	  .size([width, height])
 	  .sticky(true)
 	  .value(size);								//big treemap parameter
 
+	//add svg in website
 	var svg = d3.select("body")
 	  .append("div")
 	    .style("position", "relative")
@@ -24,9 +26,12 @@ d3.json("data.json", function(data) {
 		.attr("transform", "translate(.5, .5)");
 
 	node = root = data;
+
+	//analyze treenap
 	var nodes = treemap.nodes(root)
 	  .filter(function(d) { return !d.children; });
 
+	//add node of treemap
 	var cell = svg.selectAll("g")
 	    .data(nodes)
 	  .enter().append("svg:g")
@@ -37,12 +42,14 @@ d3.json("data.json", function(data) {
 			return zoom(node == d.parent ? root : d.parent); 
 		});
 
+	//add color
 	cell
 	  .append("svg:rect")
 	    .attr("width", function(d) { return d.dx - 1; })
 	    .attr("height", function(d) { return d.dy - 1; })
 	    .style("fill", function(d) { return color(d.parent.name); });
 
+	//add text
 	cell
 	  .append("svg:text")
 	    .attr("x", function(d) { return d.dx / 2; })
@@ -63,6 +70,7 @@ d3.json("data.json", function(data) {
 		return d.year;
 	}
 
+	//zoom effect
 	function zoom(d) {
 		var kx = width / d.dx;
 		var ky = height / d.dy;
